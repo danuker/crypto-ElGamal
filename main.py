@@ -8,6 +8,21 @@ from random import randint          # For choosing large numbers
 
 alphabet = "abcdefghijklmnopqrstuvwzy "
 
+def isPrimitiveRoot(g, p):
+    #return true if g is primitive root of p
+    o = 1
+    k = pow(g, o, p)
+    
+    while k > 1:
+        o += 1
+        k *= g
+        k %= p
+        
+    if o == (p - 1):
+        return True
+
+    return False
+
 def get_keys(bits):
     '''
     Gets key
@@ -19,14 +34,14 @@ def get_keys(bits):
     # Get a random number of at least p's bitlength    
     while(1):
         g = get_prime(g_bits)
-        if g<p:
+        if isPrimitiveRoot(g,p):
             break
     
     a_bits = bits - randint(1, bits/4)
     
     while(1):
         a = get_prime(a_bits)
-        if a>0 and a<p-1:
+        if a > 0 and a < p - 1:
             break
     
     ga = pow(g, a, p)
@@ -81,5 +96,9 @@ def decrypt(keys, ciphertext):
         m2 = m%27
         m1 = m/27
         plaintext += alphabet[m1] + alphabet[m2]
+
+    #remove any final space added for even character count
+    if plaintext[-1] == " ":
+        plaintext = plaintext[:-1]
 
     return plaintext
