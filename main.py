@@ -1,6 +1,5 @@
 from primality import get_prime # For 
 from random import randint          # For choosing large numbers
-
 # TODO:
     # GUI
     # Key generation:
@@ -41,6 +40,8 @@ def valid(message):
     return True
 
 def encrypt(public_key, message):
+        
+    
     if not valid(message):
         raise Exception("Invalid message")
     
@@ -55,23 +56,30 @@ def encrypt(public_key, message):
     ciphertext = []
     for i in range(0, len(message), 2):
         l1, l2 = message[i], message[i+1]
-        m1, m2 = string.index(l1), string.index(l2)
+        m1, m2 = alphabet.index(l1), alphabet.index(l2)
         m = 27 * m1 + m2
         beta = m * pow(ga, k, p)
         ciphertext.append((alpha,beta))
-
+    
     return ciphertext
 
-def decrypt(private_key, ciphertext):
+def decrypt(keys, ciphertext):
     '''
         ciphertext is a list of tuples
     '''
+    p = keys['public'][0]
+    a = keys['private']
     plaintext = ""
     for c in ciphertext:
         alpha, beta = c
-        m = pow(alpha, -private_key, p) * beta % p
+        print c
+        
+        inverse = pow(alpha, a, p)
+        m = pow(inverse, p-2, p)*beta  %p
+        
+        m2 = m%27
         m1 = m/27
-        m2 = m % 27
-        plaintext += m1 + m2
+        print m1, m2
+        plaintext += alphabet[m1] + alphabet[m2]
 
     return plaintext
