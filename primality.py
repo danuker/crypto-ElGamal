@@ -1,6 +1,6 @@
 #Miller-Rabin primality test
 
-import os, random, math
+import os, random, math, time
 
 #n-1 = 2^s * t
 def grab_twos(n):
@@ -16,7 +16,7 @@ def fermat(p):
     if(not(p&1)): return False
     return pow(2,p-1,p)==1
 
-#Miller-Rabin test
+#Miller-Rabin test (Works only with positive)
 def is_prime(n, k):
     if not n&1:
         return False
@@ -24,14 +24,19 @@ def is_prime(n, k):
     if k < 1:
         raise Exception("k must be strictly positive")
 
+    if n in (2, 3):
+        return True
+    if n < 2:
+        raise Exception("n must be strictly positive")
+        
     k = int(k)
     s, t = grab_twos(n-1)
 
     b = -1
     for i in range(1, k+1):
         random.seed(os.urandom(k))
-        b = random.randrange(2,n-1)
-        r = b**t % n
+        b = random.randrange(2, n-1)
+        r = pow(b, t, n)
         if r != 1 and r != n - 1:
             j = 1
             while j <= s - 1 and r != n - 1:
@@ -58,4 +63,9 @@ def get_prime(bits):
         if is_prime(num, 10):
             return num
 
-print get_prime(20)
+for i in range(2, 10):
+    bits = 2**i
+    t1 = time.time()
+    print bits,
+    get_prime(bits)
+    print time.time()-t1
