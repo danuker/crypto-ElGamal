@@ -1,6 +1,6 @@
 #Miller-Rabin primality test
 
-import os, random, math, time
+import os, random, math#, time
 
 #n-1 = 2^s * t
 def grab_twos(n):
@@ -50,8 +50,6 @@ def is_prime(n, k):
     return True
 
 def get_prime(bits):
-    
-    
     while True:
         random.seed(os.urandom(16))
         num = random.getrandbits(bits)
@@ -63,9 +61,11 @@ def get_prime(bits):
         if is_prime(num, 10):
             return num
 
-for i in range(2, 10):
-    bits = 2**i
-    t1 = time.time()
-    print bits,
-    get_prime(bits)
-    print time.time()-t1
+##Testing grounds :3
+##
+##for i in range(2, 10):
+##    bits = 2**i
+##    t1 = time.time()
+##    print bits,
+##    get_prime(bits)
+##    print time.time()-t1
