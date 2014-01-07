@@ -62,6 +62,16 @@ def encrypt(public_key, message):
 
     return ciphertext
 
+def decrypt(private_key, ciphertext):
+    '''
+        ciphertext is a list of tuples
+    '''
+    plaintext = ""
+    for c in ciphertext:
+        alpha, beta = c
+        m = pow(alpha, -private_key, p) * beta % p
+        m1 = m/27
+        m2 = m % 27
+        plaintext += m1 + m2
 
-
-        
+    return plaintext
