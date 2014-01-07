@@ -61,7 +61,6 @@ def get_prime(bits):
         if is_prime(num, 10):
             return num
 
-<<<<<<< HEAD
 if __name__=='__main__':
     for i in range(2, 10):
         bits = 2**i
@@ -69,13 +68,3 @@ if __name__=='__main__':
         print bits,
         get_prime(bits)
         print time.time()-t1
-=======
-##Testing grounds :3
-##
-##for i in range(2, 10):
-##    bits = 2**i
-##    t1 = time.time()
-##    print bits,
-##    get_prime(bits)
-##    print time.time()-t1
->>>>>>> 56931a369821a99fbc0f21c98797e20342557157
