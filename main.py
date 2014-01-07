@@ -13,7 +13,7 @@ def get_keys(bits):
     Gets key
     '''
 
-    p = get_prime(bits)    
+    p = get_prime(bits)
     g_bits = bits - randint(1, bits/2)
     
     # Get a random number of at least p's bitlength    
@@ -26,7 +26,8 @@ def get_keys(bits):
     
     while(1):
         a = get_prime(a_bits)
-        break
+        if a>0 and a<p-1:
+            break
     
     ga = pow(g, a, p)
     
@@ -46,7 +47,8 @@ def encrypt(public_key, message):
         raise Exception("Invalid message")
     
     p, g, ga = public_key
-    k = randint(1, p)
+    k = randint(2, p-2)
+
     alpha = pow(g, k, p)
     
     #add a space if the message length is odd
@@ -72,14 +74,12 @@ def decrypt(keys, ciphertext):
     plaintext = ""
     for c in ciphertext:
         alpha, beta = c
-        print c
         
         inverse = pow(alpha, a, p)
         m = pow(inverse, p-2, p)*beta  %p
         
         m2 = m%27
         m1 = m/27
-        print m1, m2
         plaintext += alphabet[m1] + alphabet[m2]
 
     return plaintext
