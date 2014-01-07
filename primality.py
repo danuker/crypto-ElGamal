@@ -63,9 +63,10 @@ def get_prime(bits):
         if is_prime(num, 10):
             return num
 
-for i in range(2, 10):
-    bits = 2**i
-    t1 = time.time()
-    print bits,
-    get_prime(bits)
-    print time.time()-t1
+if __name__=='__main__':
+    for i in range(2, 10):
+        bits = 2**i
+        t1 = time.time()
+        print bits,
+        get_prime(bits)
+        print time.time()-t1
