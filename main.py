@@ -7,7 +7,7 @@ from random import randint          # For choosing large numbers
         # Find prime number (keep using Miller-Raabin on every number) (CHECK)
         # Find generator
 
-def get_key(bits):
+def get_keys(bits):
     '''
     Gets key
     '''
@@ -29,4 +29,16 @@ def get_key(bits):
     ga = pow(g, a, p)
     
     return {"public":(p, g, ga), "private":a}
+
+def encrypt(public_key, message):
+    p, g, ga = public_key
+    k = randint(1, p)
+    alpha = pow(g, k, p)
+    
+    #add a space if the message length is odd
+    if len(message) & 1:
+        message += " "
+
+    
+
     
