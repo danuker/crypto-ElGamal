@@ -9,21 +9,6 @@ from math import log
 
 alphabet = "abcdefghijklmnopqrstuvwxyz "
 
-def isPrimitiveRoot(g, p):
-    #return true if g is primitive root of p
-    o = 1
-    k = pow(g, o, p)
-    
-    while k > 1:
-        o += 1
-        k *= g
-        k %= p
-        
-    if o == (p - 1):
-        return True
-
-    return False
-
 def get_keys(bits):
     '''
     Gets key
@@ -46,13 +31,6 @@ def get_keys(bits):
         g = random.randrange(2, p-1)
         if pow(g, q, p) == 1 and pow(g, 2, p) != 1:
             break
-    
-    # Get a random number of at least p's bitlength    
-##    while(1):
-##        random.seed(os.urandom(int(log(g_bits))))
-##        g = random.randrange(2, p-1)
-##        if isPrimitiveRoot(g,p):
-##            break
     
     a_bits = bits - random.randint(1, bits/4)
     
