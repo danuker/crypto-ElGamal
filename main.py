@@ -1,5 +1,5 @@
-from primality import get_prime, is_prime # For 
-from random import randint          # For choosing large numbers
+from primality import get_prime, is_prime
+import random, os
 from math import log
 # TODO:
     # GUI
@@ -7,7 +7,7 @@ from math import log
         # Find prime number (keep using Miller-Raabin on every number) (CHECK)
         # Find generator
 
-alphabet = "abcdefghijklmnopqrstuvwzy "
+alphabet = "abcdefghijklmnopqrstuvwxyz "
 
 def isPrimitiveRoot(g, p):
     #return true if g is primitive root of p
@@ -31,25 +31,30 @@ def get_keys(bits):
 
     while(1):
         p = get_prime(bits)
+        if p < len(alphabet) * (len(alphabet) - 1) + len(alphabet):
+            continue;
+        
         p1 = p - 1
         q = p1/2
         if is_prime(q, log(bits)):
             break
 
-    g_bits = bits - randint(1, bits/2)
+    g_bits = bits - random.randint(1, bits/2)
 
     while(1):
-        g = get_prime(g_bits)
-        if pow(g, q, p) == 1:
+        random.seed(os.urandom(int(log(g_bits))))
+        g = random.randrange(2, p-1)
+        if pow(g, q, p) == 1 and pow(g, 2, p) != 1:
             break
     
     # Get a random number of at least p's bitlength    
 ##    while(1):
-##        g = get_prime(g_bits)
+##        random.seed(os.urandom(int(log(g_bits))))
+##        g = random.randrange(2, p-1)
 ##        if isPrimitiveRoot(g,p):
 ##            break
     
-    a_bits = bits - randint(1, bits/4)
+    a_bits = bits - random.randint(1, bits/4)
     
     while(1):
         a = get_prime(a_bits)
@@ -74,7 +79,8 @@ def encrypt(public_key, message):
         raise Exception("Invalid message")
     
     p, g, ga = public_key
-    k = randint(2, p-2)
+    k = random.randint(2, p-2)
+##    print k
 
     alpha = pow(g, k, p)
     
@@ -87,6 +93,7 @@ def encrypt(public_key, message):
         l1, l2 = message[i], message[i+1]
         m1, m2 = alphabet.index(l1), alphabet.index(l2)
         m = 27 * m1 + m2
+##        print "enc_m=",m
         beta = m * pow(ga, k, p)
         ciphertext.append((alpha,beta))
     
@@ -104,9 +111,11 @@ def decrypt(keys, ciphertext):
         
         inverse = pow(alpha, a, p)
         m = pow(inverse, p-2, p)*beta  %p
+##        print "dec_m=",m
         
         m2 = m%27
         m1 = m/27
+        
         plaintext += alphabet[m1] + alphabet[m2]
 
     #remove any final space added for even character count
