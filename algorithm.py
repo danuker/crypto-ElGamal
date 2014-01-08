@@ -24,6 +24,7 @@ def get_keys(bits):
         if is_prime(q, log(bits)):
             break
 
+    #use a value in the top 50% of the number of p's bits
     g_bits = bits - random.randint(1, bits/2)
 
     while(1):
@@ -31,11 +32,14 @@ def get_keys(bits):
         g = random.randrange(2, p-1)
         if pow(g, q, p) == 1 and pow(g, 2, p) != 1:
             break
-    
+
+
+    #use a value in the top 25% of the number of p's bits
     a_bits = bits - random.randint(1, bits/4)
     
     while(1):
-        a = get_prime(a_bits)
+        random.seed(os.urandom(int(log(a_bits))))
+        a = random.randrange(1, p-1)
         if a > 0 and a < p - 1:
             break
     
