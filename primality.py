@@ -27,7 +27,7 @@ def is_prime(n, k):
     if n in (2, 3):
         return True
     if n < 2:
-        raise Exception("n must be strictly positive")
+        raise Exception("n must be greater than 2")
         
     k = int(k)
     s, t = grab_twos(n-1)
@@ -53,7 +53,7 @@ def get_prime(bits):
     while True:
         random.seed(os.urandom(16))
         num = random.getrandbits(bits)
-        if not num&1:
+        if not num&1 or num < 2:
             continue
         #print num
         if fermat(num) == False:
