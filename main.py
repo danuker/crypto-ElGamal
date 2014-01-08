@@ -1,5 +1,6 @@
-from primality import get_prime # For 
+from primality import get_prime, is_prime # For 
 from random import randint          # For choosing large numbers
+from math import log
 # TODO:
     # GUI
     # Key generation:
@@ -28,14 +29,25 @@ def get_keys(bits):
     Gets key
     '''
 
-    p = get_prime(bits)
+    while(1):
+        p = get_prime(bits)
+        p1 = p - 1
+        q = p1/2
+        if is_prime(q, log(bits)):
+            break
+
     g_bits = bits - randint(1, bits/2)
-    
-    # Get a random number of at least p's bitlength    
+
     while(1):
         g = get_prime(g_bits)
-        if isPrimitiveRoot(g,p):
+        if pow(g, q, p) == 1:
             break
+    
+    # Get a random number of at least p's bitlength    
+##    while(1):
+##        g = get_prime(g_bits)
+##        if isPrimitiveRoot(g,p):
+##            break
     
     a_bits = bits - randint(1, bits/4)
     
